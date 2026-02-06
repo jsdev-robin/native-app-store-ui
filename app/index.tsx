@@ -1,77 +1,47 @@
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
-import { Link, Stack } from 'expo-router';
-import { MoonStarIcon, StarIcon, SunIcon } from 'lucide-react-native';
-import { useColorScheme } from 'nativewind';
-import * as React from 'react';
-import { Image, type ImageStyle, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import { ScrollView, View } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import GradientButton from '../components/ui/gradient-button';
+import { Text } from '../components/ui/text';
 
-const LOGO = {
-  light: require('@/assets/images/react-native-reusables-light.png'),
-  dark: require('@/assets/images/react-native-reusables-dark.png'),
-};
+const CATEGORIES = ['Action', 'Family', 'Puzzle', 'Adventure', 'Racing', 'Education', 'Others'];
 
-const SCREEN_OPTIONS = {
-  title: 'React Native Reusables',
-  headerTransparent: true,
-  headerRight: () => <ThemeToggle />,
-};
-
-const IMAGE_STYLE: ImageStyle = {
-  height: 76,
-  width: 76,
-};
-
-export default function Screen() {
-  const { colorScheme } = useColorScheme();
-
+const index = () => {
   return (
-    <>
-      <Stack.Screen options={SCREEN_OPTIONS} />
-      <View className="flex-1 items-center justify-center gap-8 p-4">
-        <Image source={LOGO[colorScheme ?? 'light']} style={IMAGE_STYLE} resizeMode="contain" />
-        <View className="gap-2 p-4">
-          <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
-            1. Edit <Text variant="code">app/index.tsx</Text> to get started.
-          </Text>
-          <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
-            2. Save to see your changes instantly.
-          </Text>
+    <LinearGradient
+      colors={['rgba(58, 131, 244,0.4)', 'rgba(9, 181, 211, 0.4)']}
+      className="w-full flex-1">
+      <SafeAreaView>
+        {/* Header */}
+        <View className="flex flex-row justify-between">
+          <View>
+            <IconButton icon="menu" iconColor="#0D163A" size={24} className="px-0" />
+          </View>
+          <View>
+            <IconButton icon="bell" iconColor="#0D163A" size={24} />
+          </View>
         </View>
-        <View className="flex-row gap-2">
-          <Link href="https://reactnativereusables.com" asChild>
-            <Button>
-              <Text>Browse the Docs</Text>
-            </Button>
-          </Link>
-          <Link href="https://github.com/founded-labs/react-native-reusables" asChild>
-            <Button variant="ghost">
-              <Text>Star the Repo</Text>
-              <Icon as={StarIcon} />
-            </Button>
-          </Link>
+        <View className="container mx-auto px-4">
+          {/* categories */}
+          <View className="gap-2">
+            <Text variant="h3" className="text-[#0D163A]">
+              Browse Games
+            </Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: 16 }}>
+              {CATEGORIES.map((item, idx) => (
+                <GradientButton key={idx}>{item}</GradientButton>
+              ))}
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    </>
+      </SafeAreaView>
+    </LinearGradient>
   );
-}
-
-const THEME_ICONS = {
-  light: SunIcon,
-  dark: MoonStarIcon,
 };
 
-function ThemeToggle() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
-
-  return (
-    <Button
-      onPressIn={toggleColorScheme}
-      size="icon"
-      variant="ghost"
-      className="ios:size-9 rounded-full web:mx-4">
-      <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5" />
-    </Button>
-  );
-}
+export default index;
